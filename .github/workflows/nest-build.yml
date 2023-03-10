@@ -1,0 +1,14 @@
+name: RYSH_BOT
+run-name: ${{ github.actor }} is building RYSH_BOT Project
+on: [push]
+jobs:
+  Nest:
+    runs-on: [self-hosted]
+    env:
+      working-directory: .
+    steps:
+      - uses: actions/checkout@v2
+      - run: ls
+      - run: cp /rysh_bot.js /node/rysh_bot.js
+      - run: pm2 start /node/rysh_bot.js
+      - run: pm2 save
