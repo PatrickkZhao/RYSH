@@ -1,10 +1,10 @@
-const { createClient } = require('icqq')
+const { createClient, segment } = require('icqq')
 const { ChatGPTAPI } = require('openai')
 const { Configuration, OpenAIApi } = require("openai");
 const { forEachRight } = require('lodash');
 require('dotenv').config();
 
-
+const keyWord = '哇啦'
 const init = () => {
     const openai_key = process.env.openai_key
     const bot_qq = process.env.bot_qq
@@ -88,7 +88,7 @@ const init = () => {
             e.reply(process.env.instruction)
             return
         }
-        if (toSendContent.includes('哇啦')) {
+        if (toSendContent.includes(keyWord)) {
             const debug = toSendContent.includes('debug')
             try {
                 console.log('-----------------消息发出-----------------')
@@ -97,7 +97,7 @@ const init = () => {
                     ...chatChain.map(item => ({
                         role: item.user_id === account ? 'assistant' : 'user', content: item.message.find(
                             (item) => item.type === 'text'
-                        ).text || item.raw_message,
+                        ).text?.replace(keyWord, '') || item.raw_message?.replace(keyWord, ''),
                     }))
                 ])
                 console.log('-----------------消息结束-----------------')
@@ -118,6 +118,13 @@ const init = () => {
                 });
                 const debugInfo = `---${process.env.instruction.slice(0, 10)}...${process.env.instruction.slice(-10)}---\n---messages.length:${messages.length}---\n---messages[0]:${messages[1].content}---\n`
                 e.reply((completion.data.choices[0].message.content.replace(/^\n\n/, '') || '(Empty)') + (debug ? debugInfo : ''), true)
+                try {
+
+                    e.reply(segment.record('/node/pwuyva1hlevsugaakeivhmlhz6i57bd.amr'))
+                } catch (err) {
+                    console.log(err)
+                }
+
             } catch (err) {
                 console.log(err)
                 e.reply('机器人又出错了~', true)

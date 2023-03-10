@@ -9,6 +9,8 @@
     "start": ""
   },
   "dependencies": {
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "icqq": "^0.0.29",
+    "openai": "^3.2.1"
   }
 }

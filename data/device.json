@@ -1,0 +1,18 @@
+{
+  "--begin--": "该设备为随机生成，丢失后不能得到原先配置",
+  "product": "ILPP-FC0A0",
+  "device": "2BA68",
+  "board": "EFC97",
+  "brand": "C7F5",
+  "model": "ILPP F0FF",
+  "wifi_ssid": "HUAWEI-7e44b1b",
+  "bootloader": "U-boot",
+  "android_id": "IL.6676140.7394",
+  "boot_id": "45a12d83-5614-3017-af20-97dea501aab8",
+  "proc_version": "Linux version 5.10.101-android12-c6899322",
+  "mac_address": "2D:47:C4:38:76:02",
+  "ip_address": "192.168.90.52",
+  "imei": "863105056941988",
+  "incremental": "65CB334018",
+  "--end--": "修改后可能需要重新验证设备。"
+}
