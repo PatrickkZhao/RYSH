@@ -108,7 +108,7 @@ const init = () => {
                 }).catch((e) => {
                     throw e;
                 });
-                e.reply(completion.data.choices[0].message.content.replace(/^\n\n/, '') || '(Empty)', true)
+                e.reply('自定义' + completion.data.choices[0].message.content.replace(/^\n\n/, '') || '(Empty)', true)
             } catch (err) {
                 console.log(err)
                 e.reply('机器人又出错了~', true)

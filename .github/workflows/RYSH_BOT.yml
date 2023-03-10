@@ -10,5 +10,4 @@ jobs:
       - uses: actions/checkout@v2
       - run: ls
       - run: cp rysh_bot.js /node/rysh_bot.js
-      - run: pm2 start /node/rysh_bot.js
-      - run: pm2 save
+      - run: pm2 restart 5
