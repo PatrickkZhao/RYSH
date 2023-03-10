@@ -9,7 +9,6 @@ const init = () => {
     const openai_key = process.env.openai_key
     const bot_qq = process.env.bot_qq
     const bot_psw = process.env.bot_psw
-
     const configuration = new Configuration({
         apiKey: openai_key,
     });
@@ -81,13 +80,16 @@ const init = () => {
             })
             .join('\n')
         console.log('toSendContent', toSendContent)
+        if (toSendContent.includes('设定指令:')) {
+            instruction = toSendContent.replace('设定指令:', '')
+            process.env.instruction = instruction
+        }
         if (toSendContent.includes('哇啦')) {
             try {
                 console.log('-----------------消息发出-----------------')
                 console.log('messages', [
-                    { role: 'system', 'content': '你是一个 AI 助手' },
                     ...chatChain.map(item => ({
-                        role: item.user_id === 270692377 ? 'assistant' : 'user', content: item.message.find(
+                        role: item.user_id === account ? 'assistant' : 'user', content: item.message.find(
                             (item) => item.type === 'text'
                         ).text || item.raw_message,
                     }))
@@ -97,9 +99,9 @@ const init = () => {
                 const completion = await openai.createChatCompletion({
                     model: "gpt-3.5-turbo",
                     messages: [
-                        { role: 'system', 'content': '你是一个 AI 助手' },
+                        { role: 'system', content: process.env.instruction },
                         ...chatChain.map(item => ({
-                            role: item.user_id === 270692377 ? 'assistant' : 'user', content: item.message.find(
+                            role: item.user_id === account ? 'assistant' : 'user', content: item.message.find(
                                 (item) => item.type === 'text'
                             ).text || item.raw_message,
                         }))
@@ -108,7 +110,7 @@ const init = () => {
                 }).catch((e) => {
                     throw e;
                 });
-                e.reply('自定义' + completion.data.choices[0].message.content.replace(/^\n\n/, '') || '(Empty)', true)
+                e.reply(completion.data.choices[0].message.content.replace(/^\n\n/, '') || '(Empty)', true)
             } catch (err) {
                 console.log(err)
                 e.reply('机器人又出错了~', true)
