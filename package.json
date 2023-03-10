@@ -1,0 +1,14 @@
+{
+  "name": "RYSH",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/PatrickkZhao/RYSH.git",
+  "author": "patrick <patrickkzhao@icloud.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": ""
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}
