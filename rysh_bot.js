@@ -57,7 +57,7 @@ const init = () => {
     client.on('message.group', async (e) => {
 
         const group = client.pickGroup(e.group_id)
-        const chatHistory = await group.getChatHistory(e.seq, 50)
+        const chatHistory = await group.getChatHistory(e.seq, 100)
         const chatChain = []
         forEachRight(chatHistory, (item) => {
             if (
@@ -84,10 +84,16 @@ const init = () => {
             instruction = toSendContent.replace('设定指令:', '')
             process.env.instruction = instruction
         }
+        if (toSendContent.includes('查询指令。')) {
+            e.reply(process.env.instruction)
+            return
+        }
         if (toSendContent.includes('哇啦')) {
+            const debug = toSendContent.includes('debug')
             try {
                 console.log('-----------------消息发出-----------------')
                 console.log('messages', [
+                    { role: 'system', content: process.env.instruction },
                     ...chatChain.map(item => ({
                         role: item.user_id === account ? 'assistant' : 'user', content: item.message.find(
                             (item) => item.type === 'text'
@@ -95,22 +101,23 @@ const init = () => {
                     }))
                 ])
                 console.log('-----------------消息结束-----------------')
-
+                const messages = [
+                    { role: 'system', content: process.env.instruction },
+                    ...chatChain.map(item => ({
+                        role: item.user_id === account ? 'assistant' : 'user', content: item.message.find(
+                            (item) => item.type === 'text'
+                        ).text || item.raw_message,
+                    }))
+                ]
                 const completion = await openai.createChatCompletion({
                     model: "gpt-3.5-turbo",
-                    messages: [
-                        { role: 'system', content: process.env.instruction },
-                        ...chatChain.map(item => ({
-                            role: item.user_id === account ? 'assistant' : 'user', content: item.message.find(
-                                (item) => item.type === 'text'
-                            ).text || item.raw_message,
-                        }))
-                    ]
+                    messages: messages
 
                 }).catch((e) => {
                     throw e;
                 });
-                e.reply(completion.data.choices[0].message.content.replace(/^\n\n/, '') || '(Empty)', true)
+                const debugInfo = `---${process.env.instruction.slice(0, 10)}...${process.env.instruction.slice(-10)}---\n---messages.length:${messages.length}---\n---messages[0]:${messages[1].content}---\n`
+                e.reply((completion.data.choices[0].message.content.replace(/^\n\n/, '') || '(Empty)') + (debug ? debugInfo : ''), true)
             } catch (err) {
                 console.log(err)
                 e.reply('机器人又出错了~', true)
