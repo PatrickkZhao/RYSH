@@ -23,6 +23,8 @@ ${data.project.web_url}/-/pipelines
 ${dayjs(data.object_attributes.created_at).add(8, 'hour').format('MM-DD HH:mm')}
 `
             QQBotClient.pickFriend(270692377).sendMsg(msg)
+            QQBotClient.pickFriend(3357038237).sendMsg(msg)
+
         }
         res.send('ok')
     })
@@ -34,6 +36,7 @@ ${dayjs(data.object_attributes.created_at).add(8, 'hour').format('MM-DD HH:mm')}
 ${data.object_attributes.url}
 `
         QQBotClient.pickFriend(270692377).sendMsg(msg)
+        QQBotClient.pickFriend(3357038237).sendMsg(msg)
         res.send('ok')
     })
 }
