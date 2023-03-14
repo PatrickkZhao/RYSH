@@ -16,7 +16,8 @@ const handleWebhook = () => {
         const data = req.body
         console.log(req.body)
         if (!['pending', 'running'].includes(data.object_attributes.detailed_status)) {
-            const msg = `${data.user.name} ${data.project.name} ${data.object_attributes.ref} ${data.object_attributes.detailed_status}
+            const msg = `流水线
+${data.user.name} ${data.project.name} ${data.object_attributes.ref} ${data.object_attributes.detailed_status}
 ${data.commit.message?.trim()}
 ${data.project.web_url}/-/pipelines
 ${dayjs(data.object_attributes.created_at).add(8, 'hour').format('MM-DD HH:mm')}
@@ -28,7 +29,8 @@ ${dayjs(data.object_attributes.created_at).add(8, 'hour').format('MM-DD HH:mm')}
     app.post('/gitlab_issues', (req, res) => {
         const data = req.body
         console.log(req.body)
-        const msg = `🐛【${data.object_attributes.state}】${data.object_attributes.title} 
+        const msg = `ISSUES
+【${data.object_attributes.state}】${data.object_attributes.title} 
 ${data.object_attributes.url}
 `
         QQBotClient.pickFriend(270692377).sendMsg(msg)
