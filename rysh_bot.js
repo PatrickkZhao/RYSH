@@ -1,5 +1,4 @@
 const { createClient, segment } = require('icqq')
-const { ChatGPTAPI } = require('openai')
 const { Configuration, OpenAIApi } = require("openai");
 const { forEachRight } = require('lodash');
 require('dotenv').config();
@@ -118,12 +117,11 @@ const init = () => {
                 });
                 const debugInfo = `---${process.env.instruction.slice(0, 10)}...${process.env.instruction.slice(-10)}---\n---messages.length:${messages.length}---\n---messages[0]:${messages[1].content}---\n`
                 e.reply((completion.data.choices[0].message.content.replace(/^\n\n/, '') || '(Empty)') + (debug ? debugInfo : ''), true)
-                try {
-
-                    e.reply(segment.record('/node/pwuyva1hlevsugaakeivhmlhz6i57bd.amr'))
-                } catch (err) {
-                    console.log(err)
-                }
+                // try {
+                //     e.reply(segment.record('/node/pwuyva1hlevsugaakeivhmlhz6i57bd.amr'))
+                // } catch (err) {
+                //     console.log(err)
+                // }
 
             } catch (err) {
                 console.log(err)

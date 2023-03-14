@@ -9,5 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: ls
-      - run: cp rysh_bot.js /node/rysh_bot.js
-      - run: pm2 restart 5
+      - run: cp ChatGPT.js /node/ChatGPT.js
+      - run: cp expressPort.js /node/expressPort.js
+      - run: cp QQBot.js /node/QQBot.js
+      - run: pm2 start index.js
+      - run: pm2 save
