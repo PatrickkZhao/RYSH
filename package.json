@@ -10,6 +10,7 @@
     "start": ""
   },
   "dependencies": {
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "icqq": "^0.0.29",

@@ -1,11 +1,11 @@
 // const { loginQQBot, QQBotClient } = require('./QQBot');
 // const { openaiClient } = require('./ChatGPT')
 // const { app } = require('./expressPort')
+import { dayjs } from 'dayjs';
 import dotenv from 'dotenv';
 import { openaiClient } from './ChatGPT.js';
 import { app } from './expressPort.js';
-import { QQBotClient } from './QQBot.js';
-
+import { loginQQBot, QQBotClient } from './QQBot.js';
 dotenv.config();
 
 
@@ -14,13 +14,18 @@ const handleWebhook = () => {
         const data = req.body
         console.log(req.body)
         if (!['pending', 'running'].includes(data.object_attributes.detailed_status)) {
-            const msg = `${data.user.name} ${data.project.name} CI $${data.object_attributes.detailed_status}.
-        ${data.commit.message}
-        ${data.source_pipeline.project.web_url}/-/pipelines
-        ${data.object_attributes.created_at}
-        `
-            client.pickFriend(270692377).sendMsg(msg)
+            const msg = `${data.user.name} ${data.project.name} Pipeline ${data.object_attributes.detailed_status}
+${data.commit.message?.trim()}
+${data.project.web_url}/-/pipelines
+${dayjs(data.object_attributes.created_at).format('MM-DD HH:mm')}
+`
+            QQBotClient.pickFriend(270692377).sendMsg(msg)
         }
+        res.send('ok')
+    })
+    app.post('/gitlab_issues', (req, res) => {
+        const data = req.body
+        console.log(req.body)
         res.send('ok')
     })
 }
