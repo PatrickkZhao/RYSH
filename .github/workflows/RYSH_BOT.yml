@@ -12,5 +12,5 @@ jobs:
       - run: cp ChatGPT.js /node/ChatGPT.js
       - run: cp expressPort.js /node/expressPort.js
       - run: cp QQBot.js /node/QQBot.js
-      - run: pm2 start index.js
-      - run: pm2 save
+      - run: cp index.js /node/index.js
+      - run: pm2 restart 5
