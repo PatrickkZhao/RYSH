@@ -92,10 +92,10 @@ const handleGroupMsg = () => {
         if (toSendContent.includes(keyWord) || toSendContent.includes(keyWordN) || toSendContent.includes(keyWordN)) {
             let n = 1
             if (toSendContent.includes(keyWordN)) {
-                n = 3
+                n = 2
             }
             if (toSendContent.includes(keyWordNN)) {
-                n = 6
+                n = 4
             }
             try {
                 console.log('-----------------消息发出-----------------')
@@ -104,7 +104,7 @@ const handleGroupMsg = () => {
                     ...chatChain.map(item => ({
                         role: item.user_id === process.env.bot_qq ? 'assistant' : 'user', content: item.message.find(
                             (item) => item.type === 'text'
-                        ).text?.replace(keyWord, '') || item.raw_message?.replace(keyWord, ''),
+                        ).text?.replace(keyWordNN, '')?.replace(keyWordN, '')?.replace(keyWord, '') || item.raw_message?.replace(keyWordNN, '')?.replace(keyWordN, '')?.replace(keyWord, ''),
                     }))
                 ])
                 console.log('-----------------消息结束-----------------')
@@ -125,9 +125,10 @@ const handleGroupMsg = () => {
                     console.log('errrrrrrr', e)
                     throw e;
                 });
-                console.log('completion', completion);
-
-                e.reply((completion.data.choices[0].message.content.replace(/^\n\n/, '') || '(Empty)'), true)
+                completion.data.choices.map(item => {
+                    e.reply(item.message.content.replace(/^\n\n/, '') || '(Empty)')
+                })
+                // e.reply((completion.data.choices.map(item => item.message.content.replace(/^\n\n/, '')).join('\n \n') || '(Empty)'), true)
 
             } catch (err) {
                 console.log(err)
