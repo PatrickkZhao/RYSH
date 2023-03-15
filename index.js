@@ -9,6 +9,9 @@ import { app } from './expressPort.js';
 import { loginQQBot, QQBotClient } from './QQBot.js';
 dotenv.config();
 const keyWord = '哇啦'
+const keyWordN = '哇啦啦'
+const keyWordNN = '哇啦啦啦'
+
 
 
 const handleWebhook = () => {
@@ -86,7 +89,14 @@ const handleGroupMsg = () => {
             e.reply(process.env.instruction)
             return
         }
-        if (toSendContent.includes(keyWord)) {
+        if (toSendContent.includes(keyWord) || toSendContent.includes(keyWordN) || toSendContent.includes(keyWordN)) {
+            let n = 1
+            if (toSendContent.includes(keyWordN)) {
+                n = 3
+            }
+            if (toSendContent.includes(keyWordNN)) {
+                n = 6
+            }
             try {
                 console.log('-----------------消息发出-----------------')
                 console.log('messages', [
@@ -108,11 +118,15 @@ const handleGroupMsg = () => {
                 ]
                 const completion = await openaiClient.createChatCompletion({
                     model: "gpt-3.5-turbo",
-                    messages: messages
+                    messages: messages,
+                    n: n,
 
                 }).catch((e) => {
+                    console.log('errrrrrrr', e)
                     throw e;
                 });
+                console.log('completion', completion);
+
                 e.reply((completion.data.choices[0].message.content.replace(/^\n\n/, '') || '(Empty)'), true)
 
             } catch (err) {
